@@ -1,0 +1,398 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Technical Evaluation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<body class="bg-[#0b0b0c] text-[#f6f7fb] font-sans">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur bg-[#121215]/60 border-b border-white/10">
+    <div class="max-w-6xl mx-auto flex items-center justify-between py-4 px-4">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-[#ff2b45] to-[#ff6b7d] shadow-lg"></div>
+        <h1 class="text-lg font-semibold tracking-wide">Candid</h1>
+      </div>
+      <nav class="flex gap-2">
+        <a href="{% url 'home' %}" class="px-4 py-2 rounded-lg border border-white/10">Home</a>
+        <a href="{% url 'technical_evaluation' %}" class="px-4 py-2 rounded-lg border border-white/10 bg-[#ff2b45]/20">
+          Technical Evaluation
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Contenido -->
+  <section class="max-w-6xl mx-auto py-10 px-4">
+      <!-- Nombre del candidato -->
+  <div class="mb-6">
+    <label for="candidateName" class="block text-sm font-semibold mb-2">
+      Nombre del Candidato
+    </label>
+    <input 
+      type="text" 
+      id="candidateName" 
+      name="candidateName" 
+      class="w-full md:w-1/2 px-4 py-2 rounded-lg bg-[#1b1b20] border border-white/10 focus:outline-none focus:ring-2 focus:ring-[#ff2b45]"
+      placeholder="Escribe el nombre aquí..."
+      required
+    >
+  </div>
+
+    <h2 class="text-2xl font-bold mb-6">Technical Evaluation - New Hires Process</h2>
+
+    <form id="evaluationForm">
+      {% csrf_token %}
+      <div class="overflow-x-auto rounded-xl border border-white/10">
+        <table class="w-full border-collapse text-sm">
+          <thead class="bg-[#121215] text-[#bfc3cb]">
+            <tr>
+              <th class="p-3 text-left">Área a Evaluar</th>
+              <th class="p-2 text-left">Criterio</th>
+              <th class="p-3">✔ (2pts)</th>
+              <th class="p-3">~ (1pt)</th>
+              <th class="p-3">✘ (0pts)</th>
+              <th class="p-6">Comentario</th>
+              <th class="p-3">Total</th>
+            </tr>
+          </thead>
+<tbody class="divide-y divide-white/5">
+  <!-- 1 -->
+  <tr>
+    <td class="p-3 font-semibold">Anatomías</td>
+    <td class="p-3">1. Se corrigen las dos anatomías</td>
+    <td class="p-3 text-center"><input type="radio" name="row1" value="2" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row1" value="1" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row1" value="0" class="rubrica" checked></td>
+    <td class="p-3"><textarea name="comment1" class="w-full bg-[#1b1b20] border border-white/10 rounded p-2"></textarea></td>
+    <td class="p-3 text-center font-bold row-total">0</td>
+  </tr>
+
+  <!-- 2 -->
+  <tr>
+    <td class="p-3 font-semibold">Alineación</td>
+    <td class="p-3">2. Se realiza una forma de arco correcta en ambas arcadas</td>
+    <td class="p-3 text-center"><input type="radio" name="row2" value="2" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row2" value="1" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row2" value="0" class="rubrica" checked></td>
+    <td class="p-3"><textarea name="comment2" class="w-full bg-[#1b1b20] border border-white/10 rounded p-2"></textarea></td>
+    <td class="p-3 text-center font-bold row-total">0</td>
+  </tr>
+
+  <!-- 3 -->
+  <tr>
+    <td class="p-3 font-semibold">Alineación</td>
+    <td class="p-3">3. Hay una correcta nivelación anterior en ambas arcadas</td>
+    <td class="p-3 text-center"><input type="radio" name="row3" value="2" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row3" value="1" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row3" value="0" class="rubrica" checked></td>
+    <td class="p-3"><textarea name="comment3" class="w-full bg-[#1b1b20] border border-white/10 rounded p-2"></textarea></td>
+    <td class="p-3 text-center font-bold row-total">0</td>
+  </tr>
+
+  <!-- 4 -->
+  <tr>
+    <td class="p-3 font-semibold">Alineación</td>
+    <td class="p-3">4. El caso tiene una correcta oclusión cúspide-fosa</td>
+    <td class="p-3 text-center"><input type="radio" name="row4" value="2" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row4" value="1" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row4" value="0" class="rubrica" checked></td>
+    <td class="p-3"><textarea name="comment4" class="w-full bg-[#1b1b20] border border-white/10 rounded p-2"></textarea></td>
+    <td class="p-3 text-center font-bold row-total">0</td>
+  </tr>
+
+  <!-- 5 -->
+  <tr>
+    <td class="p-3 font-semibold">Staging</td>
+    <td class="p-3">5. Se resuelven las colisiones en el staging de ambas arcadas</td>
+    <td class="p-3 text-center"><input type="radio" name="row5" value="2" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row5" value="1" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row5" value="0" class="rubrica" checked></td>
+    <td class="p-3"><textarea name="comment5" class="w-full bg-[#1b1b20] border border-white/10 rounded p-2"></textarea></td>
+    <td class="p-3 text-center font-bold row-total">0</td>
+  </tr>
+
+  <!-- 6 -->
+  <tr>
+    <td class="p-3 font-semibold">Staging</td>
+    <td class="p-3">6. Los movimientos de los dientes en ambas arcadas son armoniosos (sin roundtripping o movimientos en rojo)</td>
+    <td class="p-3 text-center"><input type="radio" name="row6" value="2" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row6" value="1" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row6" value="0" class="rubrica" checked></td>
+    <td class="p-3"><textarea name="comment6" class="w-full bg-[#1b1b20] border border-white/10 rounded p-2"></textarea></td>
+    <td class="p-3 text-center font-bold row-total">0</td>
+  </tr>
+
+  <!-- 7 -->
+  <tr>
+    <td class="p-3 font-semibold">Attachments</td>
+    <td class="p-3">7. Coloca los attachments en los dientes con más de 5 grados de rotación</td>
+    <td class="p-3 text-center"><input type="radio" name="row7" value="2" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row7" value="1" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row7" value="0" class="rubrica" checked ></td>
+    <td class="p-3"><textarea name="comment7" class="w-full bg-[#1b1b20] border border-white/10 rounded p-2"></textarea></td>
+    <td class="p-3 text-center font-bold row-total">0</td>
+  </tr>
+
+  <!-- 8 -->
+  <tr>
+    <td class="p-3 font-semibold">Notas</td>
+    <td class="p-3">8. Nota explicativa al doctor</td>
+    <td class="p-3 text-center"><input type="radio" name="row8" value="2" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row8" value="1" class="rubrica"></td>
+    <td class="p-3 text-center"><input type="radio" name="row8" value="0" class="rubrica" checked></td>
+    <td class="p-3"><textarea name="comment8" class="w-full bg-[#1b1b20] border border-white/10 rounded p-2"></textarea></td>
+    <td class="p-3 text-center font-bold row-total">0</td>
+  </tr>
+</tbody>
+
+<tfoot class="bg-[#121215] text-white font-semibold">
+  <tr>
+    <td colspan="6" class="p-3 text-right">Total de puntos obtenidos</td>
+    <td id="grandTotal" class="p-3 text-center">0</td>
+  </tr>
+  <tr>
+    <td colspan="6" class="p-3 text-right">% Obtenido</td>
+    <td id="percentTotal" class="p-3 text-center">0%</td>
+  </tr>
+</tfoot>
+
+        </table>
+      </div>
+<div class="mb-6">
+  <label class="block text-sm font-semibold mb-2">
+    Evidencias (subir o pegar imágenes)
+  </label>
+
+  <!-- Contenedor de previews -->
+  <div id="previewContainer" class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+
+  <!-- Botón + -->
+  <button type="button" id="addImageBtn"
+    class="mt-4 flex items-center justify-center w-24 h-24 border-2 border-dashed border-gray-500 rounded-lg text-gray-400 hover:text-white hover:border-[#ff2b45] transition">
+    +
+  </button>
+
+  <!-- Input oculto -->
+  <input 
+    type="file" 
+    id="evidenceInput" 
+    accept="image/*" 
+    multiple
+    class="hidden"
+  >
+</div>
+
+      <div class="mt-6 flex justify-end">
+        <button type="submit" class="px-5 py-3 rounded-lg bg-gradient-to-r from-[#ff2b45] to-[#ff6b7d] font-bold">
+          Guardar Evaluación
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center text-gray-400 py-12">
+    © 2025 Candid — Reclutamiento moderno.
+  </footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const radios = document.querySelectorAll(".rubrica");
+    const grandTotal = document.getElementById("grandTotal");
+    const percentTotal = document.getElementById("percentTotal"); 
+
+    radios.forEach(radio => {
+      radio.addEventListener("change", () => {
+        const row = radio.closest("tr");
+        const rowTotal = row.querySelector(".row-total");
+        rowTotal.textContent = radio.value;
+
+        // Recalcular total global
+        let sum = 0;
+        document.querySelectorAll(".row-total").forEach(cell => {
+          sum += parseInt(cell.textContent) || 0;
+        });
+        grandTotal.textContent = sum;
+
+        // Calcular porcentaje (máximo 16 puntos)
+        const percent = (sum * 100) / 16;
+        percentTotal.textContent = percent.toFixed(2) + "%";
+      });
+    });
+  });
+</script>
+<script>
+  const addBtn = document.getElementById("addImageBtn");
+  const input = document.getElementById("evidenceInput");
+  const preview = document.getElementById("previewContainer");
+
+  let images = []; // almacenamos las imágenes seleccionadas
+
+  // Abrir el file picker al hacer click en +
+  addBtn.addEventListener("click", () => input.click());
+
+  // Manejo de selección de archivos
+  input.addEventListener("change", () => {
+    [...input.files].forEach(file => addImage(file));
+    input.value = ""; // reset para volver a elegir la misma si se quiere
+  });
+
+  // Permitir pegar imágenes con Ctrl+V
+  document.addEventListener("paste", (event) => {
+    const items = event.clipboardData.items;
+    for (const item of items) {
+      if (item.type.indexOf("image") === -1) continue;
+      const file = item.getAsFile();
+      addImage(file);
+    }
+  });
+
+  function addImage(file) {
+    if (!file.type.startsWith("image/")) return;
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      const id = Date.now() + Math.random(); // id único
+      images.push({ id, file });
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "relative group";
+
+      const img = document.createElement("img");
+      img.src = e.target.result;
+      img.className = "w-full h-32 object-cover rounded-lg border border-white/10 shadow-md";
+
+      const removeBtn = document.createElement("button");
+      removeBtn.textContent = "−";
+      removeBtn.type = "button";
+      removeBtn.className = "absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-80 group-hover:opacity-100";
+      removeBtn.addEventListener("click", () => {
+        images = images.filter(img => img.id !== id);
+        wrapper.remove();
+      });
+
+      wrapper.appendChild(img);
+      wrapper.appendChild(removeBtn);
+      preview.appendChild(wrapper);
+    };
+    reader.readAsDataURL(file);
+  }
+</script>
+<script>
+  document.getElementById("evaluationForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Nombre del candidato
+    const candidateName = document.getElementById("candidateName").value.trim();
+    if (!candidateName) {
+      Swal.fire({
+        icon: "warning",
+        title: "Campo requerido",
+        text: "El nombre del candidato es obligatorio.",
+        confirmButtonColor: "#ff2b45"
+      });
+      return;
+    }
+
+    // Recoger evaluaciones
+    const rows = document.querySelectorAll("tbody tr");
+    let evaluations = [];
+    let totalPoints = 0;
+
+    rows.forEach((row, index) => {
+      const radios = row.querySelectorAll("input[type=radio]");
+      const selected = [...radios].find(r => r.checked);
+      const score = selected ? parseInt(selected.value) : 0;
+
+      const comment = row.querySelector("textarea").value.trim();
+
+      evaluations.push({
+        criterio: row.cells[1].innerText,
+        score: score,
+        comment: comment
+      });
+
+      totalPoints += score;
+    });
+
+    // Calcular % (16 pts es el máximo en tu tabla)
+    const percent = (totalPoints * 100) / 16;
+
+    // Procesar imágenes seleccionadas
+    const imagesBase64 = [];
+    for (let img of images) {
+      const base64 = await fileToBase64(img.file);
+      imagesBase64.push(base64);
+    }
+
+    // Armar el JSON final
+    const payload = {
+      candidate_name: candidateName,
+      total_points: totalPoints,
+      percent: percent.toFixed(2),
+      evaluations: evaluations,
+      images: imagesBase64
+    };
+
+    console.log("📤 JSON a enviar:", payload);
+
+    try {
+      const response = await fetch("{% url 'guardar_evaluacion' %}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        Swal.fire({
+          icon: "success",
+          title: "¡Evaluación guardada!",
+          text: data.message,
+          confirmButtonColor: "#ff2b45"
+        });
+        e.target.reset();
+        document.getElementById("previewContainer").innerHTML = "";
+        images = [];
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: data.message || "Hubo un problema al guardar la evaluación.",
+          confirmButtonColor: "#ff2b45"
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error inesperado",
+        text: "Intenta nuevamente más tarde.",
+        confirmButtonColor: "#ff2b45"
+      });
+      console.error("Error:", error);
+    }
+  });
+
+  // Función para convertir archivos en base64
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  }
+</script>
+
+</body>
+</html>

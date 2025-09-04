@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Candid — Reclutamiento</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- CDN de Font Awesome (colócalo en el <head>) -->
+<!-- CDN de Font Awesome 6 (colócalo en el <head>) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="bg-[#0b0b0c] text-[#f6f7fb] font-sans">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur bg-[#121215]/60 border-b border-white/10">
+    <div class="max-w-6xl mx-auto flex items-center justify-between py-4 px-4">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-[#ff2b45] to-[#ff6b7d] shadow-lg"></div>
+        <h1 class="text-lg font-semibold tracking-wide">Candid</h1>
+      </div>
+      <nav class="flex gap-2">
+        <a href="{% url 'technical_evaluation' %}" class="px-4 py-2 rounded-lg border border-white/10">
+        Technical Evaluation
+        </a>
+        <a href="#preguntas" class="px-4 py-2 rounded-lg border border-white/10">Questions Interview</a>
+        <a href="#proceso" class="px-4 py-2 rounded-lg border border-white/10">Interview Process</a>
+        <a href="#" class="px-4 py-2 rounded-lg bg-gradient-to-r from-[#ff2b45] to-[#ff6b7d] font-semibold shadow-md">+ New Interviews</a>
+      </nav>
+    </div>
+  </header>
+
+<!-- Sección de Valores -->
+<section class="max-w-6xl mx-auto py-16 px-6" id="valores">
+  <h2 class="text-4xl font-bold text-center mb-12">
+    Nuestros <span class="text-[#ff2b45]">Valores</span>
+  </h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+    
+    <!-- Valor 1 -->
+    <div class="flex flex-col items-center text-center p-6 bg-[#1b1b20] border border-white/10 rounded-2xl shadow-lg hover:scale-105 transition-transform">
+      <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#ff2b45] text-white text-3xl mb-4 shadow-md">
+        <i class="fa-solid fa-heart"></i>
+      </div>
+      <h3 class="font-bold text-lg mb-2">Care Deeply</h3>
+      <p class="text-[#7e8087] text-sm">Esforzarse al máximo</p>
+    </div>
+
+    <!-- Valor 2 -->
+    <div class="flex flex-col items-center text-center p-6 bg-[#1b1b20] border border-white/10 rounded-2xl shadow-lg hover:scale-105 transition-transform">
+      <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#ff2b45] text-white text-3xl mb-4 shadow-md">
+        <i class="fa-solid fa-chart-line"></i>
+      </div>
+      <h3 class="font-bold text-lg mb-2">Drive Results</h3>
+      <p class="text-[#7e8087] text-sm">Alcanzar resultados</p>
+    </div>
+
+    <!-- Valor 3 -->
+    <div class="flex flex-col items-center text-center p-6 bg-[#1b1b20] border border-white/10 rounded-2xl shadow-lg hover:scale-105 transition-transform">
+      <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#ff2b45] text-white text-3xl mb-4 shadow-md">
+        <i class="fa-solid fa-book-open"></i>
+      </div>
+      <h3 class="font-bold text-lg mb-2">Commit to Growth</h3>
+      <p class="text-[#7e8087] text-sm">Compromiso de crecimiento</p>
+    </div>
+
+    <!-- Valor 4 -->
+    <div class="flex flex-col items-center text-center p-6 bg-[#1b1b20] border border-white/10 rounded-2xl shadow-lg hover:scale-105 transition-transform">
+      <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#ff2b45] text-white text-3xl mb-4 shadow-md">
+        <i class="fa-solid fa-bullhorn"></i>
+      </div>
+      <h3 class="font-bold text-lg mb-2">Embrace Candor</h3>
+      <p class="text-[#7e8087] text-sm">Abrazar la franqueza</p>
+    </div>
+
+    <!-- Valor 5 -->
+    <div class="flex flex-col items-center text-center p-6 bg-[#1b1b20] border border-white/10 rounded-2xl shadow-lg hover:scale-105 transition-transform">
+      <div class="w-20 h-20 flex items-center justify-center rounded-full bg-[#ff2b45] text-white text-3xl mb-4 shadow-md">
+        <i class="fa-solid fa-handshake"></i>
+      </div>
+      <h3 class="font-bold text-lg mb-2">Work as One</h3>
+      <p class="text-[#7e8087] text-sm">Trabajar como uno solo</p>
+    </div>
+
+  </div>
+</section>
+
+
+
+  <!-- Tabs -->
+  <section class="max-w-6xl mx-auto px-4">
+    <!-- Tabbar -->
+    <div class="flex gap-2 border-b border-white/10">
+      <button class="py-3 px-4 border-b-2 border-[#ff2b45] font-semibold">Technical Evaluation</button>
+      <button class="py-3 px-4 text-gray-400">Questions Interview</button>
+      <button class="py-3 px-4 text-gray-400">Interview Process</button>
+    </div>
+
+    <!-- Cards grid -->
+    <div class="grid md:grid-cols-2 gap-4 mt-6">
+      <div class="bg-[#121215] rounded-2xl border border-white/10 p-5 shadow-lg">
+        <h3 class="text-xl font-semibold mb-2">Lista de pruebas</h3>
+        <p class="text-[#bfc3cb] mb-4">Gestiona evaluaciones por stack o seniority y asigna tiempo límite.</p>
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="text-[#b9bdc6] border-b border-white/10">
+              <th class="py-2 text-left">Evaluación</th>
+              <th class="py-2 text-left">Nivel</th>
+              <th class="py-2 text-left">Duración</th>
+              <th class="py-2 text-left">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-white/5">
+              <td class="py-2">Frontend React + JS</td><td>Mid</td><td>60 min</td><td><span class="px-2 py-1 rounded-full text-xs bg-green-900 text-green-300">Activa</span></td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2">Backend Node + SQL</td><td>Senior</td><td>90 min</td><td><span class="px-2 py-1 rounded-full text-xs bg-green-900 text-green-300">Activa</span></td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2">QA Automation</td><td>Junior</td><td>45 min</td><td><span class="px-2 py-1 rounded-full text-xs bg-amber-900 text-amber-300">Revisión</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bg-[#121215] rounded-2xl border border-white/10 p-5 shadow-lg">
+        <h3 class="text-xl font-semibold mb-2">Detalle / Vista previa</h3>
+        <p class="text-[#bfc3cb] mb-4">Previsualiza preguntas y comparte un enlace seguro con el candidato.</p>
+        <ul class="list-disc ml-6 text-gray-300 text-sm space-y-1 mb-4">
+          <li>Banco de preguntas por tema</li>
+          <li>Temporizador integrado y auto-guardado</li>
+          <li>Antiplagio básico (aleatorización)</li>
+        </ul>
+        <div class="flex gap-3">
+          <button class="px-4 py-2 rounded-xl bg-[#17171a] border border-white/10">Clonar</button>
+          <button class="px-4 py-2 rounded-xl bg-gradient-to-r from-[#ff2b45] to-[#ff6b7d] font-semibold">Generar enlace</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center text-gray-400 py-12">
+    © 2025 Candid — Reclutamiento moderno.
+  </footer>
+</body>
+</html>
