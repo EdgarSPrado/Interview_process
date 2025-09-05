@@ -14,10 +14,13 @@
   <!-- Header -->
   <header class="sticky top-0 z-50 backdrop-blur bg-[#121215]/60 border-b border-white/10">
     <div class="max-w-6xl mx-auto flex items-center justify-between py-4 px-4">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-[#ff2b45] to-[#ff6b7d] shadow-lg"></div>
-        <h1 class="text-lg font-semibold tracking-wide">Candid</h1>
-      </div>
+<div class="flex items-center gap-3">
+  <!-- Logo de CANDID en lugar del cuadrado -->
+  <div class="w-9 h-9 rounded-lg overflow-hidden border-2 border-[#ff2b45] shadow-lg">
+    <img src="{% static 'logo.png' %}" alt="CANDID Logo" class="w-full h-full object-cover">
+  </div>
+  <h1 class="text-lg font-semibold tracking-wide">Candid</h1>
+</div>
       <nav class="flex gap-2">
         <a href="{% url 'home' %}" class="px-4 py-2 rounded-lg border border-white/10">Home</a>
         <a href="{% url 'technical_evaluation' %}" class="px-4 py-2 rounded-lg border border-white/10 bg-[#ff2b45]/20">
