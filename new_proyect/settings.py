@@ -17,7 +17,9 @@ import os
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    'https://interview-app-277258730584.us-central1.run.app',
+]
 
 
 # Application definition
@@ -71,13 +73,16 @@ import os
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv("DB_NAME", "candid_db"),
-        'USER': os.getenv("DB_USER", "candid_user"),
-        'PASSWORD': os.getenv("DB_PASSWORD", "TuPasswordSeguro"),
-        'HOST': os.getenv("DB_HOST", "/cloudsql/atlantean-theme-278715:us-central1:candid-mysql"),
+        'NAME': "candid_db",
+        'USER': "candid_user",
+        'PASSWORD': "TuPasswordSeguro",
+        'HOST': "/cloudsql/atlantean-theme-278715:us-central1:candid-mysql",
         'PORT': "3306",
     }
 }
+
+
+
 
 
 
