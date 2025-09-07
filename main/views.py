@@ -10,6 +10,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
+def create_group_view(request):
+    return render(request, 'create_group.html')
 
 def login_view(request):
     if request.method == "POST":

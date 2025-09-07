@@ -10,6 +10,8 @@ urlpatterns = [
     path("home/", views.home, name="home"),   # Home redirigido después de login
     path("technical-evaluation/", views.technical_evaluation, name="technical_evaluation"),
     path("guardar-evaluacion/", views.guardar_evaluacion, name="guardar_evaluacion"),
+    path('create-group/', views.create_group_view, name='create_group'),
+
 ]
 
 if settings.DEBUG:  

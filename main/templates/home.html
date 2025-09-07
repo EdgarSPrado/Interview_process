@@ -11,25 +11,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="bg-[#0B0B0C] text-[#F6F7FB] font-sans">
-  <!-- Header -->
-  <header class="sticky top-0 z-50 backdrop-blur bg-[#121215]/60 border-b border-white/10">
-    <div class="max-w-6xl mx-auto flex items-center justify-between py-4 px-4">
-      <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-lg overflow-hidden border-2 border-[#ff2b45] shadow-lg">
-    <img src="{% static 'logo.png' %}" alt="CANDID Logo" class="w-full h-full object-cover">
-  </div>
-        <h1 class="text-lg font-semibold tracking-wide">Candid Interview Process </h1>
-      </div>
-      <nav class="flex gap-2">
-        <a href="{% url 'technical_evaluation' %}" class="px-4 py-2 rounded-lg border border-white/10">
-        Questions Interview
-        </a>
-        <a href="#preguntas" class="px-4 py-2 rounded-lg border border-white/10">Technical Evaluation</a>
-        <a href="#proceso" class="px-4 py-2 rounded-lg border border-white/10">Interview Process</a>
-        <a href="#" class="px-4 py-2 rounded-lg bg-gradient-to-r from-[#FF2B45] to-[#FF6B7D] font-semibold shadow-md">+ New Interviews</a>
-      </nav>
-    </div>
-  </header>
+      {% include 'header.html' %}
+
 <!-- Sección de Valores -->
 <section class="max-w-6xl mx-auto py-16 px-6" id="valores">
   <h2 class="text-4xl font-bold text-center mb-12">
@@ -130,7 +113,7 @@
   </section>
   <!-- Footer -->
   <footer class="text-center text-gray-400 py-12">
-     Candid — Reclutamiento
+     ©  Candid — Reclutamiento
   </footer>
 </body>
 </html>

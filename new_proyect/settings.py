@@ -6,20 +6,18 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-(6@mk)h8*_8vii_o(^9ho!!08*k^j+q8ez=*gnt_o8j9z54^6%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 import os
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Application definition
@@ -68,12 +66,20 @@ WSGI_APPLICATION = 'new_proyect.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+import os
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv("DB_NAME", "candid_db"),
+        'USER': os.getenv("DB_USER", "candid_user"),
+        'PASSWORD': os.getenv("DB_PASSWORD", "TuPasswordSeguro"),
+        'HOST': os.getenv("DB_HOST", "/cloudsql/atlantean-theme-278715:us-central1:candid-mysql"),
+        'PORT': "3306",
     }
 }
+
+
 
 
 # Password validation

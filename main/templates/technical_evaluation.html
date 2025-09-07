@@ -11,27 +11,13 @@
 </head>
 <body class="bg-[#0b0b0c] text-[#f6f7fb] font-sans">
 
-  <!-- Header -->
-  <header class="sticky top-0 z-50 backdrop-blur bg-[#121215]/60 border-b border-white/10">
-    <div class="max-w-6xl mx-auto flex items-center justify-between py-4 px-4">
-<div class="flex items-center gap-3">
-  <!-- Logo de CANDID en lugar del cuadrado -->
-  <div class="w-9 h-9 rounded-lg overflow-hidden border-2 border-[#ff2b45] shadow-lg">
-    <img src="{% static 'logo.png' %}" alt="CANDID Logo" class="w-full h-full object-cover">
-  </div>
-  <h1 class="text-lg font-semibold tracking-wide">Candid</h1>
-</div>
-      <nav class="flex gap-2">
-        <a href="{% url 'home' %}" class="px-4 py-2 rounded-lg border border-white/10">Home</a>
-        <a href="{% url 'technical_evaluation' %}" class="px-4 py-2 rounded-lg border border-white/10 bg-[#ff2b45]/20">
-          Technical Evaluation
-        </a>
-      </nav>
-    </div>
-  </header>
+    {% include 'header.html' %}
+
 
   <!-- Contenido -->
-  <section class="max-w-6xl mx-auto py-10 px-4">
+<!--<section class="max-w-6xl mx-auto py-10 px-4 bg-black/20 backdrop-blur-sm rounded-lg">-->
+  <section class="max-w-6xl mx-auto py-10 px-4 bg-gray-800/80 backdrop-blur-sm rounded-lg">
+
       <!-- Nombre del candidato -->
   <div class="mb-6">
     <label for="candidateName" class="block text-sm font-semibold mb-2">
@@ -66,15 +52,16 @@
           </thead>
 <tbody class="divide-y divide-white/5">
   <!-- 1 -->
-  <tr>
-    <td class="p-3 font-semibold">Anatomías</td>
-    <td class="p-3">1. Se corrigen las dos anatomías</td>
-    <td class="p-3 text-center"><input type="radio" name="row1" value="2" class="rubrica"></td>
-    <td class="p-3 text-center"><input type="radio" name="row1" value="1" class="rubrica"></td>
-    <td class="p-3 text-center"><input type="radio" name="row1" value="0" class="rubrica" checked></td>
-    <td class="p-3"><textarea name="comment1" class="w-full bg-[#1b1b20] border border-white/10 rounded p-2"></textarea></td>
-    <td class="p-3 text-center font-bold row-total">0</td>
-  </tr>
+<tr>
+  <td class="p-3 font-semibold w-28">Anatomías</td> <!-- columna criterio más angosta -->
+  <td class="p-3 w-64">1. Se corrigen las dos anatomías</td> <!-- descripción -->
+  <td class="p-3 text-center w-12"><input type="radio" name="row1" value="2" class="rubrica"></td>
+  <td class="p-3 text-center w-12"><input type="radio" name="row1" value="1" class="rubrica"></td>
+  <td class="p-3 text-center w-12"><input type="radio" name="row1" value="0" class="rubrica" checked></td>
+  <td class="p-3 w-80"><textarea name="comment1" class="w-full bg-[#1b1b20] border border-white/10 rounded p-2"></textarea></td>
+  <td class="p-3 text-center font-bold w-12 row-total">0</td>
+</tr>
+
 
   <!-- 2 -->
   <tr>
@@ -201,9 +188,8 @@
 
   <!-- Footer -->
   <footer class="text-center text-gray-400 py-12">
-    © 2025 Candid — Reclutamiento moderno.
+   ©  Candid — Reclutamiento
   </footer>
-
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const radios = document.querySelectorAll(".rubrica");
