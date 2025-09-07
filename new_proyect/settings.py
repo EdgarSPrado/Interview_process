@@ -80,6 +80,8 @@ DATABASES = {
         'USER': "candid_user",
         'PASSWORD': "TuPasswordSeguro",
         'HOST': "/cloudsql/atlantean-theme-278715:us-central1:candid-mysql",
+        #'HOST': "127.0.0.1",
+        #'PORT': "3307",
         'PORT': "3306",
     }
 }

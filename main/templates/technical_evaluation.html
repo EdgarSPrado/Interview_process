@@ -32,8 +32,17 @@
       required
     >
   </div>
+<!-- Contenedor título + botón -->
+<div class="mb-6 flex items-center justify-between">
+  <h2 class="text-2xl font-bold">Technical Evaluation - New Hires Process</h2>
 
-    <h2 class="text-2xl font-bold mb-6">Technical Evaluation - New Hires Process</h2>
+  <a href="{% url 'create_group' %}" 
+     class="px-4 py-2 rounded-lg border border-white/10 bg-[#22c55e]/20 text-white font-semibold hover:bg-[#22c55e]/50 transition">
+    Create Group
+  </a>
+</div>
+
+
 
     <form id="evaluationForm">
       {% csrf_token %}

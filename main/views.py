@@ -9,7 +9,8 @@ from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-
+def process_view(request):
+    return render(request,'intermediario.html')
 def create_group_view(request):
     return render(request, 'create_group.html')
 
