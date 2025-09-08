@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calendario de Proyectos – Candid-Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-[#0b0b0e] text-[#e9e9ee] font-sans">
+  <div class="max-w-7xl mx-auto px-6 py-6">
+    
+    <!-- HEADER -->
+    <header class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold">📅 Candid – Calendario</h1>
+      <div class="flex gap-2">
+        <a href="{% url 'calendar_admin' %}" 
+           class="bg-[#1b1b22] border border-gray-700 px-3 py-1 rounded-lg text-sm hover:bg-gray-800">
+          Admin
+        </a>
+        <a href="{% url 'calendar_user' %}" 
+           class="bg-[#1b1b22] border border-gray-700 px-3 py-1 rounded-lg text-sm hover:bg-gray-800">
+          User
+        </a>
+      </div>
+    </header>
+
+    <!-- GRID -->
+    <div class="grid md:grid-cols-2 gap-6">
+      
+      <!-- PANEL IZQUIERDO -->
+      <section class="bg-[#121217] border border-gray-800 rounded-xl shadow-lg p-5">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-semibold">Nuevo / Editar proyecto</h3>
+          <span class="text-xs px-2 py-1 rounded-full bg-[#1b1b22] border border-gray-700 text-gray-400">
+            API
+          </span>
+        </div>
+        
+        <form id="projectForm" class="space-y-4">
+          <input type="hidden" id="projectId" />
+          
+          <div>
+            <label class="block text-xs text-gray-400 mb-1">Nombre del proyecto</label>
+            <input type="text" id="name" class="w-full px-3 py-2 rounded-lg bg-[#1b1b22] border border-gray-700 text-sm" placeholder="Ej. App de Inventario">
+          </div>
+
+          <div>
+            <label class="block text-xs text-gray-400 mb-1">Especificación</label>
+            <textarea id="spec" class="w-full px-3 py-2 rounded-lg bg-[#1b1b22] border border-gray-700 text-sm" placeholder="Descripción breve, alcance, stack…"></textarea>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs text-gray-400 mb-1">Fecha inicio</label>
+              <input type="date" id="start" class="w-full px-3 py-2 rounded-lg bg-[#1b1b22] border border-gray-700 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs text-gray-400 mb-1">Fecha fin</label>
+              <input type="date" id="end" class="w-full px-3 py-2 rounded-lg bg-[#1b1b22] border border-gray-700 text-sm">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-3 items-center">
+            <div>
+              <label class="block text-xs text-gray-400 mb-1">Estado</label>
+              <select id="status" class="w-full px-3 py-2 rounded-lg bg-[#1b1b22] border border-gray-700 text-sm">
+                <option value="queue">En cola</option>
+                <option value="scheduled">Agendado</option>
+                <option value="inprogress">En progreso</option>
+                <option value="completed">Completado</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs text-gray-400 mb-1">% Avance</label>
+              <input type="range" id="progress" min="0" max="100" value="0" class="w-full">
+              <span id="progressValue" class="text-xs text-gray-400">0%</span>
+            </div>
+            <div>
+              <label class="block text-xs text-gray-400 mb-1">Buscar</label>
+              <input type="text" id="search" class="w-full px-3 py-2 rounded-lg bg-[#1b1b22] border border-gray-700 text-sm" placeholder="Filtrar…">
+            </div>
+          </div>
+
+          <div class="flex gap-2 flex-wrap mt-3">
+            <button type="submit" class="bg-gradient-to-b from-[#ff2d55] to-[#b1152f] text-white px-4 py-2 rounded-lg text-sm">Guardar</button>
+            <button type="button" id="btnClear" class="bg-[#1b1b22] border border-gray-700 px-4 py-2 rounded-lg text-sm">Limpiar</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- PANEL DERECHO (CALENDARIO) -->
+      <section class="bg-[#121217] border border-gray-800 rounded-xl shadow-lg p-5">
+        <h3 class="text-lg font-semibold mb-4">Calendario</h3>
+        <div id="calendar" class="rounded-lg overflow-hidden"></div>
+      </section>
+    </div>
+  </div>
+  
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // --- CALENDARIO ---
+  var calendarEl = document.getElementById('calendar');
+// --- CALENDARIO ---
+var calendar = new FullCalendar.Calendar(calendarEl, {
+  initialView: 'dayGridMonth',
+  height: 600,
+  events: '/api/eventos/',
+  eventClick: function(info) {
+    const ev = info.event.extendedProps;
+
+    Swal.fire({
+      title: info.event.title,
+      html: `
+        <p><b>Fecha inicio:</b> ${info.event.startStr}</p>
+        <p><b>Fecha fin:</b> ${info.event.endStr}</p>
+        <p><b>Estado:</b> ${ev.estado}</p>
+        <p><b>Progreso:</b> ${ev.progreso}%</p>
+        <p><b>Especificación:</b><br>${ev.especificacion || "—"}</p>
+      `,
+      confirmButtonText: 'Cerrar',
+      confirmButtonColor: '#ff2d55',
+      width: '400px',
+      background: '#1b1b22',
+      color: '#f6f7fb'
+    });
+  }
+});
+
+  calendar.render();
+
+  // --- PROGRESS BAR ---
+  const progressInput = document.getElementById('progress');
+  const progressValue = document.getElementById('progressValue');
+  progressInput.addEventListener('input', () => {
+    progressValue.textContent = progressInput.value + "%";
+  });
+
+  // --- FORMULARIO ---
+  document.getElementById('projectForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const data = {
+      nombre: document.getElementById('name').value.trim(),
+      especificacion: document.getElementById('spec').value.trim(),
+      fecha_inicio: document.getElementById('start').value,
+      fecha_fin: document.getElementById('end').value,
+      progreso: document.getElementById('progress').value,
+      estado: document.getElementById('status').value,
+    };
+
+    // Validación de campos
+    if (!data.nombre || !data.especificacion || !data.fecha_inicio || !data.fecha_fin) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor llena todos los campos obligatorios.',
+        confirmButtonColor: '#ff2d55'
+      });
+      return;
+    }
+
+    fetch('/api/eventos/crear/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Evento creado',
+          text: 'Tu evento fue agregado correctamente.',
+          confirmButtonColor: '#22c55e'
+        });
+        calendar.refetchEvents();
+        document.getElementById('projectForm').reset();
+        progressValue.textContent = "0%";
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: res.error || "No se pudo crear el evento.",
+          confirmButtonColor: '#ff2d55'
+        });
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de conexión',
+        text: 'Revisa tu red o contacta al administrador.',
+        confirmButtonColor: '#ff2d55'
+      });
+    });
+  });
+
+  // --- BOTÓN LIMPIAR ---
+  document.getElementById('btnClear').addEventListener('click', () => {
+    document.getElementById('projectForm').reset();
+    progressValue.textContent = "0%";
+  });
+});
+</script>
+</body>
+</html>

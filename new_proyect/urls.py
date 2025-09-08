@@ -12,9 +12,13 @@ urlpatterns = [
     path("guardar-evaluacion/", views.guardar_evaluacion, name="guardar_evaluacion"),
     path('create-group/', views.create_group_view, name='create_group'),
     path('process/', views.process_view, name='process'),
+    path('calendar/admin', views.calendar_admin_view, name='calendar_admin'),
+    path('calendar/user', views.calendar_user_view, name='calendar_user'),
     path('calendar/', views.calendar_view, name='calendar'),
     path("api/eventos/", views.eventos_list, name="eventos_list"),
     path("api/eventos/crear/", views.crear_evento, name="crear_evento"),
+    path("api/eventos/crear-user/", views.crear_evento_user, name="crear_evento_user"),
+
 ]
 
 if settings.DEBUG:  

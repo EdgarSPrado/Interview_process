@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import TechnicalEvaluation, EvaluationImage
+from .models import TechnicalEvaluation, EvaluationImage,Evento
 
 
 class EvaluationImageInline(admin.TabularInline):
@@ -21,3 +21,10 @@ class TechnicalEvaluationAdmin(admin.ModelAdmin):
 class EvaluationImageAdmin(admin.ModelAdmin):
     list_display = ("evaluation", "image", "uploaded_at")
     readonly_fields = ("uploaded_at",)
+
+@admin.register(Evento)
+class EventoAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "usuario", "area", "estado", "progreso", "fecha_entrega", "creado_en")
+    search_fields = ("nombre", "usuario", "area")
+    list_filter = ("estado", "creado_en", "fecha_entrega")
+    readonly_fields = ("creado_en", "actualizado_en")

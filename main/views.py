@@ -14,6 +14,38 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
 import json
 from .models import Evento
+@csrf_exempt
+@require_POST
+def crear_evento_user(request):
+    try:
+        data = json.loads(request.body)
+
+        nombre = data.get("nombre", "").strip()
+        especificacion = data.get("especificacion", "").strip()
+        usuario = data.get("usuario", "").strip()
+        area = data.get("area", "").strip()
+        fecha_entrega = data.get("fecha_entrega")  # puede ser null
+        estado = data.get("estado", "En cola")     # default user
+
+        if not nombre or not usuario or not area:
+            return JsonResponse({"success": False, "error": "Faltan campos obligatorios."}, status=400)
+
+        evento = Evento.objects.create(
+            nombre=nombre,
+            especificacion=especificacion if especificacion else None,
+            usuario=usuario,
+            area=area,
+            fecha_entrega=fecha_entrega if fecha_entrega else None,
+            estado=estado,
+            progreso=0,
+            fecha_inicio=None,
+            fecha_fin=None,
+        )
+
+        return JsonResponse({"success": True, "id": evento.id})
+
+    except Exception as e:
+        return JsonResponse({"success": False, "error": str(e)}, status=500)
 
 @require_GET
 def eventos_list(request):
@@ -56,8 +88,14 @@ def crear_evento(request):
 
 
 
+def calendar_admin_view(request):
+    return render(request,'calendario_admin.html')
+def calendar_user_view(request):
+    return render(request,'calendario_user.html')
 def calendar_view(request):
     return render(request,'calendario.html')
+
+
 def process_view(request):
     return render(request,'intermediario.html')
 def create_group_view(request):

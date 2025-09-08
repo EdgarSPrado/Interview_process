@@ -1,19 +1,32 @@
 from django.db import models
-from django.db import models
 
 class Evento(models.Model):
     nombre = models.CharField(max_length=200)  # Nombre del proyecto/evento
     especificacion = models.TextField(blank=True, null=True)  # Opcional
+
+    # Restricciones para el admin, el user no podrá editarlos
     fecha_inicio = models.DateField(blank=True, null=True)
     fecha_fin = models.DateField(blank=True, null=True)
-    estado = models.CharField(max_length=50, blank=True, null=True)  # Texto libre
     progreso = models.PositiveIntegerField(blank=True, null=True)  # % avance
+
+    # Nuevos campos solo para usuario
+    usuario = models.CharField(max_length=200, blank=True, null=True)
+    area = models.CharField(max_length=200, blank=True, null=True)
+    fecha_entrega = models.DateField(blank=True, null=True)
+
+    estado = models.CharField(
+        max_length=50,
+        default="En cola",  # siempre en español
+        blank=True,
+        null=True
+    )
 
     creado_en = models.DateTimeField(auto_now_add=True)  # Se guarda al crear
     actualizado_en = models.DateTimeField(auto_now=True)  # Se actualiza al modificar
 
     def __str__(self):
         return self.nombre
+
 class TechnicalEvaluation(models.Model):
     candidate_name = models.CharField(max_length=200)
     total_points = models.IntegerField(default=0)
