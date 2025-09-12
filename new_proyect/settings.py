@@ -46,10 +46,10 @@ import os
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CORS_ALLOWED_ORIGINS = [
-    'https://interview-app-277258730584.us-central1.run.app',
+    'https://candid-277258730584.us-central1.run.app',
 ]
 CSRF_TRUSTED_ORIGINS = [
-    'https://interview-app-277258730584.us-central1.run.app',
+    'https://candid-277258730584.us-central1.run.app',
 ]
 
 
