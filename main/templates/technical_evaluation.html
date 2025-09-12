@@ -36,11 +36,12 @@
 <div class="mb-6 flex items-center justify-between">
   <h2 class="text-2xl font-bold">Technical Evaluation - New Hires Process</h2>
 
-  <a href="{% url 'create_group' %}" 
+  <button id="createGroupBtn"
      class="px-4 py-2 rounded-lg border border-white/10 bg-[#22c55e]/20 text-white font-semibold hover:bg-[#22c55e]/50 transition">
     Create Group
-  </a>
+  </button>
 </div>
+
 
 
 
@@ -187,11 +188,19 @@
   >
 </div>
 
-      <div class="mt-6 flex justify-end">
-        <button type="submit" class="px-5 py-3 rounded-lg bg-gradient-to-r from-[#ff2b45] to-[#ff6b7d] font-bold">
-          Guardar Evaluación
-        </button>
-      </div>
+<div class="mt-6 flex justify-end items-center space-x-4">
+  <!-- Select de grupos -->
+  <div>
+    <select id="groupSelect" class="px-4 py-2 rounded-lg bg-[#1b1b20] border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-[#ff2b45]">
+      <option value="">Selecciona un grupo</option>
+    </select>
+  </div>
+
+  <!-- Botón guardar -->
+  <button type="submit" class="px-5 py-3 rounded-lg bg-gradient-to-r from-[#ff2b45] to-[#ff6b7d] font-bold">
+    Guardar Evaluación
+  </button>
+</div>
     </form>
   </section>
 
@@ -199,6 +208,36 @@
   <footer class="text-center text-gray-400 py-12">
    ©  Candid — Reclutamiento
   </footer>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    loadGroups(); // Cargar al inicio
+  });
+
+  async function loadGroups() {
+    const groupSelect = document.getElementById("groupSelect");
+    
+    // Limpiar opciones previas
+    groupSelect.innerHTML = '<option value="">-- Selecciona un grupo --</option>';
+
+    try {
+      const response = await fetch("{% url 'get_groups' %}");
+      const data = await response.json();
+
+      if (data.success && Array.isArray(data.groups)) {
+        data.groups.forEach(group => {
+          const option = document.createElement("option");
+          option.value = group.id;
+          option.textContent = group.name;
+          groupSelect.appendChild(option);
+        });
+      }
+    } catch (error) {
+      console.error("Error al cargar los grupos:", error);
+    }
+  }
+</script>
+
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const radios = document.querySelectorAll(".rubrica");
@@ -218,13 +257,16 @@
         });
         grandTotal.textContent = sum;
 
-        // Calcular porcentaje (máximo 16 puntos)
-        const percent = (sum * 100) / 16;
+        // Calcular porcentaje dinámico (número de filas * 2)
+        const rows = document.querySelectorAll("tbody tr");
+        const maxPoints = rows.length * 2;
+        const percent = (sum * 100) / maxPoints;
         percentTotal.textContent = percent.toFixed(2) + "%";
       });
     });
   });
 </script>
+
 <script>
   const addBtn = document.getElementById("addImageBtn");
   const input = document.getElementById("evidenceInput");
@@ -282,115 +324,215 @@
     reader.readAsDataURL(file);
   }
 </script>
+
 <script>
-  document.getElementById("evaluationForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
+document.getElementById("evaluationForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    // Nombre del candidato
-    const candidateName = document.getElementById("candidateName").value.trim();
-    if (!candidateName) {
-      Swal.fire({
-        icon: "warning",
-        title: "Campo requerido",
-        text: "El nombre del candidato es obligatorio.",
-        confirmButtonColor: "#ff2b45"
-      });
-      return;
+  // Nombre del candidato
+  const candidateName = document.getElementById("candidateName").value.trim();
+  if (!candidateName) {
+    Swal.fire({
+      icon: "warning",
+      title: "Campo requerido",
+      text: "El nombre del candidato es obligatorio.",
+      confirmButtonColor: "#ff2b45"
+    });
+    return;
+  }
+
+  // Grupo seleccionado
+  const groupSelect = document.getElementById("groupSelect");
+  const selectedGroup = groupSelect.value;
+  if (!selectedGroup) {
+    Swal.fire({
+      icon: "warning",
+      title: "Grupo obligatorio",
+      text: "Debes seleccionar un grupo antes de guardar la evaluación.",
+      confirmButtonColor: "#ff2b45"
+    });
+    return;
+  }
+
+  // Mostrar loader
+  Swal.fire({
+    title: 'Guardando evaluación...',
+    html: 'Por favor espera mientras se procesa la información.',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
     }
+  });
 
-    // Recoger evaluaciones
-    const rows = document.querySelectorAll("tbody tr");
-    let evaluations = [];
-    let totalPoints = 0;
+  // Recoger evaluaciones
+  const rows = document.querySelectorAll("tbody tr");
+  let evaluations = [];
+  let totalPoints = 0;
 
-    rows.forEach((row, index) => {
-      const radios = row.querySelectorAll("input[type=radio]");
-      const selected = [...radios].find(r => r.checked);
-      const score = selected ? parseInt(selected.value) : 0;
+  rows.forEach((row, index) => {
+    const radios = row.querySelectorAll("input[type=radio]");
+    const selected = [...radios].find(r => r.checked);
+    const score = selected ? parseInt(selected.value) : 0;
 
-      const comment = row.querySelector("textarea").value.trim();
+    const comment = row.querySelector("textarea").value.trim();
 
-      evaluations.push({
-        criterio: row.cells[1].innerText,
-        score: score,
-        comment: comment
-      });
-
-      totalPoints += score;
+    evaluations.push({
+      id: `row${index + 1}`,
+      criterio: row.cells[1].innerText,
+      score: score,
+      comment: comment
     });
 
-    // Calcular % (16 pts es el máximo en tu tabla)
-    const percent = (totalPoints * 100) / 16;
+    totalPoints += score;
+  });
 
-    // Procesar imágenes seleccionadas
-    const imagesBase64 = [];
-    for (let img of images) {
-      const base64 = await fileToBase64(img.file);
-      imagesBase64.push(base64);
+  // Calcular % dinámico
+  const maxPoints = rows.length * 2;
+  const percent = (totalPoints * 100) / maxPoints;
+
+  // Procesar imágenes seleccionadas
+  const imagesBase64 = [];
+  for (let img of images) {
+    const base64 = await fileToBase64(img.file);
+    imagesBase64.push(base64);
+  }
+
+  // Armar el JSON final incluyendo el grupo
+  const payload = {
+    candidate_name: candidateName,
+    total_points: totalPoints,
+    percent: percent.toFixed(2),
+    group_id: selectedGroup, // ✅ agregamos el grupo
+    evaluations: evaluations,
+    images: imagesBase64
+  };
+
+  console.log("📤 JSON a enviar:", payload);
+
+  try {
+    const response = await fetch("{% url 'guardar_evaluacion' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    Swal.close(); // Cerrar loader
+
+    if (data.success) {
+      Swal.fire({
+        icon: "success",
+        title: "¡Evaluación guardada!",
+        text: data.message,
+        confirmButtonColor: "#ff2b45"
+      });
+      e.target.reset();
+      document.getElementById("previewContainer").innerHTML = "";
+      images = [];
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: data.message || "Hubo un problema al guardar la evaluación.",
+        confirmButtonColor: "#ff2b45"
+      });
     }
+  } catch (error) {
+    Swal.close(); // Cerrar loader
+    Swal.fire({
+      icon: "error",
+      title: "Error inesperado",
+      text: "Intenta nuevamente más tarde.",
+      confirmButtonColor: "#ff2b45"
+    });
+    console.error("Error:", error);
+  }
+});
 
-    // Armar el JSON final
-    const payload = {
-      candidate_name: candidateName,
-      total_points: totalPoints,
-      percent: percent.toFixed(2),
-      evaluations: evaluations,
-      images: imagesBase64
-    };
+// Función para convertir archivos en base64
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+}
+</script>
+<!-- Script de creacion de grupos  con ajax -->
+<script>
+document.getElementById("createGroupBtn").addEventListener("click", async () => {
+  const { value: groupName } = await Swal.fire({
+    title: 'Crear nuevo grupo',
+    input: 'text',
+    inputLabel: 'Nombre del grupo',
+    inputPlaceholder: 'Escribe el nombre del grupo',
+    showCancelButton: true,
+    confirmButtonText: 'Crear',
+    cancelButtonText: 'Cancelar',
+    inputValidator: (value) => {
+      if (!value) return 'El nombre del grupo es obligatorio';
+    }
+  });
 
-    console.log("📤 JSON a enviar:", payload);
+  if (groupName) {
+    Swal.fire({
+      title: 'Creando grupo...',
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading()
+    });
 
     try {
-      const response = await fetch("{% url 'guardar_evaluacion' %}", {
+      const response = await fetch("{% url 'crear_grupo' %}", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ name: groupName })
       });
 
       const data = await response.json();
+      Swal.close();
 
       if (data.success) {
         Swal.fire({
           icon: "success",
-          title: "¡Evaluación guardada!",
-          text: data.message,
-          confirmButtonColor: "#ff2b45"
+          title: "¡Grupo creado!",
+          text: `Grupo "${groupName}" creado correctamente.`,
+          confirmButtonColor: "#22c55e"
         });
-        e.target.reset();
-        document.getElementById("previewContainer").innerHTML = "";
-        images = [];
+
+        // ✅ Recargar el select de grupos
+        loadGroups();
+
       } else {
         Swal.fire({
           icon: "error",
           title: "Error",
-          text: data.message || "Hubo un problema al guardar la evaluación.",
+          text: data.message || "No se pudo crear el grupo.",
           confirmButtonColor: "#ff2b45"
         });
       }
     } catch (error) {
+      Swal.close();
       Swal.fire({
         icon: "error",
         title: "Error inesperado",
         text: "Intenta nuevamente más tarde.",
         confirmButtonColor: "#ff2b45"
       });
-      console.error("Error:", error);
+      console.error(error);
     }
-  });
-
-  // Función para convertir archivos en base64
-  function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
   }
+});
 </script>
+
+
 
 </body>
 </html>

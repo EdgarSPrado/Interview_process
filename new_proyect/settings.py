@@ -1,10 +1,38 @@
-
-
 from pathlib import Path
+import os
+import json
+import firebase_admin
+from firebase_admin import credentials, firestore, storage
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Directorio base del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Lógica de inicialización de Firebase
+if not firebase_admin._apps:
+    firebase_key_env = os.environ.get('FIREBASE_KEY')
+
+    if firebase_key_env:
+        # Modo de producción: usar variable de entorno
+        cred_data = json.loads(firebase_key_env)
+        cred = credentials.Certificate(cred_data)
+    else:
+        # Modo de desarrollo local: usar archivo .json
+        firebase_key_path = os.path.join(BASE_DIR, "firebase-key.json")
+        cred = credentials.Certificate(firebase_key_path)
+
+    firebase_admin.initialize_app(cred, {
+        "projectId": "candid-fa710",
+        "storageBucket": "candid-fa710.firebasestorage.app",
+    })
+
+# Cliente de Firestore
+FIRESTORE_CLIENT = firestore.Client(
+    project="candid-fa710",
+    database="candid-production"
+)
+
+# Cliente de Cloud Storage Bucket
+FIREBASE_BUCKET = storage.bucket("candid-fa710.firebasestorage.app")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-(6@mk)h8*_8vii_o(^9ho!!08*k^j+q8ez=*gnt_o8j9z54^6%'
@@ -75,18 +103,10 @@ import os
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': "candid_db",
-        'USER': "candid_user",
-        'PASSWORD': "TuPasswordSeguro",
-        'HOST': "/cloudsql/atlantean-theme-278715:us-central1:candid-mysql",
-        #'HOST': "127.0.0.1",
-        #'PORT': "3307",
-        'PORT': "3306",
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
-
-
 
 
 
